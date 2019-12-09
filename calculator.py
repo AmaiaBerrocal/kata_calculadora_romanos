@@ -1,13 +1,24 @@
 from tkinter import *
 from tkinter import ttk
+import tkinter
+
 
 HEIGHTBTN = 50
 WIDTHBTN = 68
 
 class CalcButton(ttk.Frame):
     def __init__(self, parent, text, command, wbtn=1, hbtn=1):
-        ttk.Frame.__init__(self, parent, width=wbtn*WIDTHBTN, ...)
+        ttk.Frame.__init__(self, parent, width=wbtn*WIDTHBTN, height=hbtn*HEIGHTBTN)
+        
+        self.pack_propagate(0)
+        
+        s = ttk.Style()
+        s.theme_use('alt')
+        s.configure('my.TButton', font='Helvetica 15')
 
+        self.__btn = ttk.Button(self, style='my.TButton', text=text, command=command)
+        self.__btn.pack(side=TOP, fill=BOTH, expand=True)
+        
 class Display(ttk.Frame):
     def __init__(self, parent):
         ttk.Frame.__init__(self, parent, width=4*WIDTHBTN, height=HEIGHTBTN)
@@ -16,14 +27,27 @@ class Display(ttk.Frame):
         
         s = ttk.Style()
         s.theme_use('alt')
-        s.configure('my.TLabel', font='Helvetica 42')
+        s.configure('my.TLabel', font='Helvetica 30')
 
         self.__lbl = ttk.Label(self, text="_", style='my.TLabel', anchor=E, background='black', foreground='white')
         self.__lbl.pack(side=TOP, fill=BOTH, expand=True)
 
 class Selector(ttk.Frame):
-    def __init__(self, parent):
-        ttk.Frame.__init__(self, parent)
+    def __init__(self, parent, command=None):
+        ttk.Frame.__init__(self, parent, width=2*WIDTHBTN, height=HEIGHTBTN)
+
+        self.pack_propagate(0)
+
+        v = tkinter.IntVar()
+
+        s = ttk.Style()
+        s.theme_use('alt')
+        s.configure('my.TRadiobutton', font='Helvetica 12')
+        
+        self.__rbtnA = ttk.Radiobutton(self, variable=v, value=1, style= 'my.TRadiobutton', command=command, text="Arabigo")
+        self.__rbtnR = ttk.Radiobutton(self, variable=v, value=2, style= 'my.TRadiobutton', command=command, text="Romano")
+        self.__rbtnA.place(x=15, y=0)
+        self.__rbtnR.place(x=15, y=20)
 
 class Calculator(ttk.Frame):
     def __init__(self, parent):
@@ -54,14 +78,14 @@ class Calculator(ttk.Frame):
         self.buttonSub.grid(column=3, row=3)
 
         self.buttonI = CalcButton(self, text="I", command=None)
-        self.buttonI.grid(column=0, row=3)
+        self.buttonI.grid(column=0, row=4)
         self.buttonV = CalcButton(self, text="V", command=None)
-        self.buttonV.grid(column=1, row=3)
-        self.buttonAdd = CalcButton(self, text="-", command=None)
-        self.buttonAdd.grid(column=3, row=3)
+        self.buttonV.grid(column=1, row=4)
+        self.buttonAdd = CalcButton(self, text="+", command=None)
+        self.buttonAdd.grid(column=3, row=4)
 
         self.buttonEqu = CalcButton(self, text="=", command=None, wbtn=2)
-        self.buttonEqu.grid(column=3, row=4, columnspan=2)
+        self.buttonEqu.grid(column=2, row=5, columnspan=2)
 
         self.selector = Selector(self)
-        self.selector.grid(column=0, row=4)
+        self.selector.grid(column=0, row=5, columnspan=2)
