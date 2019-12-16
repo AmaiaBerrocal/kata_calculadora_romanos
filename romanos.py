@@ -9,8 +9,6 @@ rangos = {
     3: {1: 'M', 'next': ''}
 }
 
-
-
 def numParentesis(cadena):
     num = 0
     for c in cadena:
